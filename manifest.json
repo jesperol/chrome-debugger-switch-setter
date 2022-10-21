@@ -1,11 +1,8 @@
 {
-  "name": "Getting Started Example",
+  "name": "Force Emulation Starter",
   "description": "Build an Extension!",
   "version": "1.0",
   "manifest_version": 3,
-  "background": {
-    "service_worker": "background.js"
-  },
   "permissions": ["storage", "activeTab", "scripting", "debugger"],
   "action": {
     "default_popup": "popup.html",
@@ -22,6 +19,5 @@
     "32": "/images/darken_32.png",
     "48": "/images/darken_48.png",
     "128": "/images/darken_128.png"
-  },
-  "options_page": "options.html"
+  }
 }

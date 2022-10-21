@@ -1,4 +1,4 @@
-let page = document.getElementById("optionsDiv");
+/* let page = document.getElementById("optionsDiv");
 let selectedClassName = "current";
 const PresetDarkModeSettings = {
   InversionAlgorithm: 3,
@@ -42,9 +42,9 @@ function constructCommandLine(darkModeSettings) {
   chrome.storage.sync.get("darkModeSettings", (data) => {
     let currentSettings = data.darkModeSettings || PresetDarkModeSettings;
 
-    const switchString = 
+    const switchString = "";
  
-    var select = document.createElement("select");
+    let select = document.createElement("select");
     select.id = select.name = "darkModeInversionAlgorith";
     
     for (const [key, value] of Object.entries(DarkModeInversionAlgorithms))
@@ -62,7 +62,7 @@ function constructCommandLine(darkModeSettings) {
  
     document.getElementById("optionsDiv").appendChild(label).appendChild(select);
 
-    var select = document.createElement("select");
+    select = document.createElement("select");
     select.id = select.name = "darkModeImagePolicy";
     
     for (const [key, value] of Object.entries(DarkModeImagePolicies))
@@ -88,3 +88,5 @@ function handleInputEvent(event) {
 });
 
 // Initialize the page by constructing the color options
+
+*/

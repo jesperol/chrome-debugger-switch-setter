@@ -1,25 +1,24 @@
 // Initialize button with users' preferred color
-let changeColor = document.getElementById("changeColor");
+let forceDark = document.getElementById("forceDark");
+let emulateFocus = document.getElementById("emulateFocus");
 
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
+forceDark.addEventListener("click", async () => { 
+    toggleEmulation("Emulation.setAutoDarkModeOverride");
+});
+emulateFocus.addEventListener("click", async () => { 
+    toggleEmulation("Emulation.setFocusEmulationEnabled" );
 });
 
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+async function toggleEmulation(command) {
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+    debuggeeId = { tabId: tab.id };
 
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: setPageBackgroundColor,
-  });
-});
-
-// The body of this function will be executed as a content script inside the
-// current page
-function setPageBackgroundColor() {
-  chrome.storage.sync.get("color", ({ color }) => {
-    document.body.style.backgroundColor = color;
-  });
-  console.log('Document background color set to %c%s', `color: ${color}`, color);
+    // We need to attach to our tab first in order to be able to ssendCommand() to it
+    await chrome.debugger.attach(debuggeeId, "1.0").catch((msg) => console.log("already attached?"));
+    await chrome.debugger.sendCommand(
+      debuggeeId,
+      command, { "enabled": true },
+    )
+    // If we detach we lose our changes
+    // await chrome.debugger.detach(debuggeeId)
 }
