@@ -1,6 +1,26 @@
-let page = document.getElementById("buttonDiv");
+let page = document.getElementById("optionsDiv");
 let selectedClassName = "current";
-const presetButtonColors = ["#3aa757", "#e8453c", "#f9bb2d", "#4688f1"];
+const PresetDarkModeSettings = {
+  InversionAlgorithm: 3,
+  ImagePolicy: 2,
+  ForegroundBrightnessThreshold: 150,
+  BackgroundBrightnessThreshold: 204,
+  ContrastPercent: 0,
+  IncreaseTextContrast: 0
+};
+
+const DarkModeInversionAlgorithms = {
+  kSimpleInvertForTesting: { id: 0, desc: "Simple Invert for testing." },
+  kInvertBrightness: { id: 1, desc: "Rgb based (kInvertBrightness)" },
+  kInvertLightness: { id: 2, desc: "HSL based (kInvertLightness)" },
+  kInvertLightnessLAB: { id: 3, desc: "CieLab based (kInvertLightnessLAB)" }
+};
+
+const DarkModeImagePolicies = {
+   kFilterAll: { id: 0, desc: "Apply dark-mode filter to all images." },
+   kFilterNone: { id: 1, desc: "Never apply dark-mode filter to any images." },
+   kFilterSmart: { id: 2, desc:  "Apply dark-mode based on image content." }
+};
 
 // Reacts to a button click by marking the selected button and saving
 // the selection
@@ -13,36 +33,58 @@ function handleButtonClick(event) {
     current.classList.remove(selectedClassName);
   }
 
-  // Mark the button as selected
-  let color = event.target.dataset.color;
-  event.target.classList.add(selectedClassName);
-  chrome.storage.sync.set({ color });
+  chrome.storage.sync.set({ darkModeSettings });
   console.log('Stored background color set to %c%s', `color: ${color}`, color);
 }
 
 // Add a button to the page for each supplied color
-function constructOptions(buttonColors) {
-  chrome.storage.sync.get("color", (data) => {
-    let currentColor = data.color;
+function constructCommandLine(darkModeSettings) {
+  chrome.storage.sync.get("darkModeSettings", (data) => {
+    let currentSettings = data.darkModeSettings || PresetDarkModeSettings;
 
-    // For each color we were provided…
-    for (let buttonColor of buttonColors) {
-      // …create a button with that color…
-      let button = document.createElement("button");
-      button.dataset.color = buttonColor;
-      button.style.backgroundColor = buttonColor;
-
-      // …mark the currently selected color…
-      if (buttonColor === currentColor) {
-        button.classList.add(selectedClassName);
-      }
-
-      // …and register a listener for when that button is clicked
-      button.addEventListener("click", handleButtonClick);
-      page.appendChild(button);
+    const switchString = 
+ 
+    var select = document.createElement("select");
+    select.id = select.name = "darkModeInversionAlgorith";
+    
+    for (const [key, value] of Object.entries(DarkModeInversionAlgorithms))
+    {
+        var option = document.createElement("option");
+        option.value = key;
+        option.text = value
+        select.appendChild(option);
     }
-  });
+    select.addEventListener("select", handleInputEvent);
+ 
+    var label = document.createElement("label");
+    label.innerHTML = "Dark Mode Inversion Algorith: "
+    label.htmlFor = "darkModeInversionAlgorithm";
+ 
+    document.getElementById("optionsDiv").appendChild(label).appendChild(select);
+
+    var select = document.createElement("select");
+    select.id = select.name = "darkModeImagePolicy";
+    
+    for (const [key, value] of Object.entries(DarkModeImagePolicies))
+    {
+        var option = document.createElement("option");
+        option.value = key;
+        option.text = value
+        select.appendChild(option);
+    }
+    select.addEventListener("select", handleInputEvent);
+ 
+    var label = document.createElement("label");
+    label.innerHTML = "Dark Mode Inversion Algorith: "
+    label.htmlFor = "darkModeInversionAlgorithm";
+ 
+    document.getElementById("optionsDiv").appendChild(label).appendChild(select);
+  }
 }
 
+function handleInputEvent(event) {
+  document.getElementById("commandLineSwitches").innerHTML = '--dark-mode-settings=' +
+      Object.entries(presetDarkModeSettings).map((item) => item.join('=')).join(',');
+});
+
 // Initialize the page by constructing the color options
-constructOptions(presetButtonColors);
