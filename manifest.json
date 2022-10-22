@@ -1,6 +1,6 @@
 {
   "name": "Force Emulation Starter",
-  "description": "Build an Extension!",
+  "description": "Lets you turn on the Force Dark Mode and Emulate Focus debugger switches from the toolbar.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["storage", "activeTab", "scripting", "debugger"],
