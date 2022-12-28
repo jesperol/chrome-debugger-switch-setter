@@ -1,4 +1,3 @@
-// Initialize button with users' preferred color
 let forceDark = document.getElementById("forceDark");
 let emulateFocus = document.getElementById("emulateFocus");
 
@@ -10,11 +9,10 @@ emulateFocus.addEventListener("click", async () => {
 });
 
 async function toggleEmulation(command) {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     debuggeeId = { tabId: tab.id };
 
-    // We need to attach to our tab first in order to be able to ssendCommand() to it
-    await chrome.debugger.attach(debuggeeId, "1.0").catch((msg) => console.log("already attached?"));
+    await chrome.debugger.attach(debuggeeId, "1.0").catch((msg) => console.error("ChromeDebuggerSwitchSetter: " + msg));
     await chrome.debugger.sendCommand(
       debuggeeId,
       command, { "enabled": true },
