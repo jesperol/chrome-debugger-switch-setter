@@ -3,7 +3,7 @@
   "description": "Lets you turn on the Force Dark Mode and Emulate Focus debugger switches from the toolbar.",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage", "activeTab", "scripting", "debugger"],
+  "permissions": ["activeTab", "debugger"],
   "action": {
     "default_popup": "popup.html"
   },
