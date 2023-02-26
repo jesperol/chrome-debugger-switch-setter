@@ -10,7 +10,7 @@ emulateFocus.addEventListener("click", async () => {
 
 async function toggleEmulation(command) {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    debuggeeId = { tabId: tab.id };
+    let debuggeeId = { tabId: tab.id };
 
     await chrome.debugger.attach(debuggeeId, "1.0").catch((msg) => console.error("ChromeDebuggerSwitchSetter: " + msg));
     await chrome.debugger.sendCommand(
