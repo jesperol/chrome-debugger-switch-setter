@@ -12,6 +12,9 @@
     "48": "/images/darken_48.png",
     "128": "/images/darken_128.png"
   },
+  "background": {
+    "service_worker": "service_worker.js"
+  },
   "commands": {
     "_execute_action": {
       "suggested_key": {
