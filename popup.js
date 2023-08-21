@@ -36,3 +36,22 @@ async function toggleEmulation(command) {
     
     chrome.action.setBadgeText({ tabId: tab.id, text: badgeLetters})
 }
+
+// Not really any debugger functionality but let's add it here too
+let btnFSIFrame = document.getElementById("btnFSIFrame");
+let txtFSID = document.getElementById("txtFSID");
+
+btnFSIFrame.addEventListener("click", async () => {
+    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: (elementId) => document.querySelector(elementId)?.requestFullscreen().catch(e => console.error(e)),
+        args: [ txtFSID.value ],
+        injectImmediately: true,
+        world: 'MAIN'
+    }, (frameResults) => {
+        for (const frameResult of frameResults) {
+            console.log("StopCapture Injection result: " + frameResult.result);
+        }
+    });
+});
